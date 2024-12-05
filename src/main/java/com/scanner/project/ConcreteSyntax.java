@@ -133,9 +133,6 @@ public class ConcreteSyntax {
 			// TODO TO BE COMPLETED
 			token = input.nextToken();
 			s = whileStatement();
-			// match("(");
-
-			// match(")");
 		} else if (token.getType().equals("Identifier")) { // Assignment
 			// TODO TO BE COMPLETED
 			s = assignment();
@@ -162,12 +159,9 @@ public class ConcreteSyntax {
 			a.target.id = token.getValue();
 			token = input.nextToken();
 			match(":=");
-			if (token.getType().equals("Expression")) {
-				a.source = expression();
-			} else {
-				throw new RuntimeException(SyntaxError("Expression"));
-			}
-
+			a.source = expression();
+			match(";");
+//			token = input.nextToken();
 		} else
 			throw new RuntimeException(SyntaxError("Identifier"));
 		return a;
@@ -186,6 +180,7 @@ public class ConcreteSyntax {
 			b.term2 = conjunction();
 			e = b;
 		}
+//		token = input.nextToken();
 		return e;
 	}
 
@@ -203,6 +198,7 @@ public class ConcreteSyntax {
 			b.term2 = relation();
 			e = b;
 		}
+//		token = input.nextToken();
 		return e;
 	}
 
@@ -213,6 +209,7 @@ public class ConcreteSyntax {
 		e = addition();
 		// TODO TO BE CHECKED AND COMPLETED. Do we have all the operators?
 		while (token.getValue().equals("<") || token.getValue().equals("<=")
+				|| token.getValue().equals(">")
 				|| token.getValue().equals(">=")
 				|| token.getValue().equals("==")
 				|| token.getValue().equals("!=")) {
@@ -224,6 +221,8 @@ public class ConcreteSyntax {
 			b.term2 = addition();
 			e = b;
 		}
+//		token = input.nextToken();
+
 		return e;
 	}
 
@@ -240,9 +239,8 @@ public class ConcreteSyntax {
 			token = input.nextToken();
 			b.term2 = term();
 			e = b;
-			token = input.nextToken();
 		}
-		token = input.nextToken();
+//		token = input.nextToken();
 		return e;
 	}
 
@@ -260,7 +258,7 @@ public class ConcreteSyntax {
 			b.term2 = negation();
 			e = b;
 		}
-		token = input.nextToken();
+
 		return e;
 	}
 
@@ -288,7 +286,7 @@ public class ConcreteSyntax {
 		} else if (token.getType().equals("Literal")) {
 			Value v = null;
 			if (isInteger(token.getValue()))
-				v = new Value((new Integer(token.getValue())).intValue());
+				v = new Value(Integer.parseInt(token.getValue()));
 			else if (token.getValue().equals("true"))
 				v = new Value(true);
 			else if (token.getValue().equals("false"))
@@ -311,7 +309,6 @@ public class ConcreteSyntax {
 		Conditional c = new Conditional();
 		// TODO TO BE COMPLETED
 		match("if");
-		token = input.nextToken();
 		match("(");
 		c.test = expression();
 		match(")");
