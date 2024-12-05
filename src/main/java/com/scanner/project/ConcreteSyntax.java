@@ -131,7 +131,6 @@ public class ConcreteSyntax {
 		else if (token.getValue().equals("while")) {
 			// WhileStatement
 			// TODO TO BE COMPLETED
-			token = input.nextToken();
 			s = whileStatement();
 		} else if (token.getType().equals("Identifier")) { // Assignment
 			// TODO TO BE COMPLETED
